@@ -58,10 +58,12 @@
         "source": "https://github.com/ernestdefoe/lobby"
     },
     "require-dev": {
+        "flarum/lock": "^2.0",
         "flarum/mentions": "^2.0",
         "flarum/messages": "^2.0",
         "flarum/phpstan": "^2.0",
         "flarum/sticky": "^2.0",
+        "flarum/subscriptions": "^2.0",
         "flarum/tags": "^2.0",
         "flarum/testing": "^2.0"
     },

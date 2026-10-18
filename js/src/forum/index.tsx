@@ -8,6 +8,8 @@ import installIndexPage from './indexPage';
 import installRows from './rows';
 import registerOnlineWidgets from './widgets';
 import { bootVisits } from './visits';
+import installTopicPage from './topic/topicPage';
+import installStreamDecor from './topic/streamDecor';
 
 // NOTE: the admin extender is exported from js/src/admin/index.ts and NOWHERE
 // else. It imports flarum/admin/app, which does not exist on the forum, and
@@ -26,6 +28,8 @@ app.initializers.add(
     installShell();
     installIndexPage();
     installRows();
+    installTopicPage();
+    installStreamDecor();
     registerOnlineWidgets();
 
     // In the sidebar's user panel the session menu is a settings cog: the

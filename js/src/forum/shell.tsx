@@ -11,6 +11,7 @@ import Sidebar from './components/Sidebar';
 import { closeDrawer, isDrawerOpen, toggleDrawer } from './drawer';
 import { currentTag } from './channels';
 import formatCount from './formatCount';
+import { MessageBar, ThreadInfoModal, channelOf, currentTopicPage } from './topic/topicPage';
 
 const t = (key: string, params: Record<string, any> = {}) => app.translator.trans(`ernestdefoe-lobby.forum.${key}`, params);
 
@@ -39,6 +40,7 @@ export default function installShell() {
     mount('div', 'LobbyShell-sidebar', Sidebar, true);
     mount('div', 'LobbyShell-topbar', PhoneTopBar, true);
     mount('div', 'LobbyShell-tabbar', TabBar);
+    mount('div', 'LobbyShell-dock', TopicDock);
 
     // The scrim behind the open drawer; a tap on it closes the drawer.
     const scrim = document.createElement('div');
@@ -67,10 +69,67 @@ function pageTitle(): string {
   return (app as any).title || app.forum.attribute<string>('title');
 }
 
+/** The discussion on screen, once it has loaded. */
+function topic(): any {
+  return app.current.matches(DiscussionPage) ? app.current.get('discussion') || null : null;
+}
+
+/**
+ * The docked message bar, on discussion pages. Mounted with the shell so it
+ * can be fixed to the foot of the column on every screen size; it steps aside
+ * while the composer is open, which then takes its place.
+ */
+const TopicDock = {
+  view() {
+    const discussion = topic();
+    if (!discussion || app.composer.isVisible()) return null;
+
+    return <MessageBar discussion={discussion} />;
+  },
+};
+
 const PhoneTopBar = {
   view() {
     const onIndex = app.current.matches(IndexPage);
     const hash = onIndex && currentTag();
+    const discussion = topic();
+
+    if (discussion) {
+      const channel = channelOf(discussion);
+      const replies = discussion.replyCount() || 0;
+
+      return (
+        <header className="LobbyTopBar LobbyTopBar--topic">
+          <button type="button" className="LobbyTopBar-button" aria-label={t('phone.back') as any} onclick={() => app.history.back()}>
+            <Icon name="fas fa-chevron-left" />
+          </button>
+          <div className="LobbyTopBar-stack">
+            <span className="LobbyTopBar-sub">
+              {channel ? (
+                <span>
+                  <span className="LobbyTopBar-hash" aria-hidden="true">
+                    #
+                  </span>
+                  {channel.name()} ·{' '}
+                </span>
+              ) : null}
+              {t('topic.replies', { count: replies, formatted: formatCount(replies) })}
+            </span>
+            <h1 className="LobbyTopBar-title">
+              <span className="LobbyTopBar-text">{discussion.title()}</span>
+            </h1>
+          </div>
+          <button
+            type="button"
+            className="LobbyTopBar-button"
+            aria-label={t('topic.thread_info_and_controls') as any}
+            onclick={() => app.modal.show(ThreadInfoModal, { discussion, stream: app.current.get('stream') || currentTopicPage()?.stream })}
+          >
+            <Icon name="fas fa-ellipsis-h" />
+          </button>
+        </header>
+      );
+    }
 
     return (
       <header className="LobbyTopBar">

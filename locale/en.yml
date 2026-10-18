@@ -51,6 +51,29 @@ ernestdefoe-lobby:
       staff: "Staff — {count}"
       members: "Online — {count}"
       more: "{count, plural, one {and {formatted} more} other {and {formatted} more}}"
+    topic:
+      replies: "{count, plural, one {{formatted} reply} other {{formatted} replies}}"
+      participants_label: "{count, plural, one {# participant} other {# participants}}"
+      participants: "Participants — {count}"
+      solved: Solved
+      jump_unread: Jump to unread
+      thread_info: Thread info
+      thread_info_and_controls: Thread info and controls
+      started_by: Started by
+      created: Created
+      replies_label: Replies
+      jump_to: Jump to
+      first: First
+      unread: Unread
+      latest: Latest
+      online: Online
+      locked: This discussion is locked.
+      message_in: "Message #{channel} › {title}"
+      message: "Message {title}"
+      today: Today
+      yesterday: Yesterday
+      new_messages: New messages
+      replying_to: "replying to {name}"
     row:
       pinned: Pinned
       replies: "{count, plural, one {# reply} other {# replies}}"
