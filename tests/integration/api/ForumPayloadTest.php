@@ -58,6 +58,17 @@ class ForumPayloadTest extends LobbyTestCase
     }
 
     #[Test]
+    public function a_hidden_first_post_gives_no_excerpt()
+    {
+        $this->database()->table('posts')->where('id', 1)->update(['hidden_at' => \Carbon\Carbon::now()]);
+
+        [$status, $body] = $this->get('/api/discussions', 1);
+
+        $this->assertSame(200, $status);
+        $this->assertNull($body['data'][0]['attributes']['lobbyExcerpt']);
+    }
+
+    #[Test]
     public function the_forum_page_stamps_the_accent_and_renders()
     {
         $response = $this->send($this->request('GET', '/'));

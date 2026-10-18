@@ -52,6 +52,17 @@ class DiscussionResourceFields
             return null;
         }
 
+        /*
+         * 🚨 The eager load is not visibility-scoped, so this reads the post
+         * whatever its state. A first post that is hidden, or still waiting
+         * for flarum/approval, says nothing in the list: its text would
+         * otherwise reach readers who cannot open it. Both are columns on
+         * the loaded row, so the check costs no query.
+         */
+        if ($post->hidden_at !== null || $post->getAttribute('is_approved') === false || $post->getAttribute('is_approved') === 0) {
+            return null;
+        }
+
         $xml = $post->parsed_content;
 
         // Attachment markup carries filenames and sizes, which read as noise
