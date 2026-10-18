@@ -78,16 +78,24 @@ Measured with 25 tags (15 of them children) and 60 discussions. These numbers ar
 
 ## Running it next to other themes
 
-Lobby works with [Wardrobe](https://github.com/ernestdefoe/wardrobe). Declare it as a theme there and your members can choose it while everyone else keeps the forum's default.
+Lobby works with [Wardrobe](https://github.com/ernestdefoe/wardrobe). Tick it as a theme there, and members (and guests) can choose it while everyone else keeps the forum's default. Wardrobe keeps every other theme's CSS and JavaScript out of a Lobby visitor's page, and Lobby keeps its server-side work (channel list, counts, excerpts, the font preload) to the visitors who are actually on Lobby. Visitors on another theme pay nothing for it.
 
 ## Install
 
 ```bash
 composer require ernestdefoe/lobby
+```
+
+Then enable **Lobby** under *Admin → Extensions*. To update later:
+
+```bash
+composer update ernestdefoe/lobby
 php flarum migrate
 php flarum cache:clear
 ```
 
 ## Licence
 
-Proprietary. The bundled Geist fonts are under the SIL Open Font License 1.1 (`assets/fonts/OFL.txt`).
+MIT. Free to use. The bundled Geist fonts are under the SIL Open Font License 1.1 (`assets/fonts/OFL.txt`).
+
+☕ If you like the things I have built, consider [buying me a coffee](https://buymeacoffee.com/ernestdefoe).

@@ -7,7 +7,10 @@
  * file that was distributed with this source code.
  */
 
+use ErnestDefoe\Lobby\ActiveTheme;
 use ErnestDefoe\Lobby\Api;
+use ErnestDefoe\Lobby\Http\DecideTheme;
+use ErnestDefoe\Lobby\LobbyServiceProvider;
 use Flarum\Api\Context;
 use Flarum\Api\Endpoint;
 use Flarum\Api\Resource;
@@ -17,12 +20,18 @@ use Flarum\Frontend\Document;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Flarum\Tags\Tag;
 use Illuminate\Contracts\Filesystem\Factory as Filesystems;
+use Psr\Http\Message\ServerRequestInterface;
 
 return [
     (new Extend\Frontend('forum'))
         ->js(__DIR__.'/js/dist/forum.js')
         ->css(__DIR__.'/less/forum.less')
-        ->content(function (Document $document) {
+        ->content(function (Document $document, ServerRequestInterface $request) {
+            // A visitor on another Wardrobe theme gets none of this.
+            if (! resolve(ActiveTheme::class)->isLobby($request)) {
+                return;
+            }
+
             $accent = resolve(SettingsRepositoryInterface::class)->get('ernestdefoe-lobby.accent', 'amber');
             $accent = in_array($accent, ['amber', 'blue', 'green', 'pink', 'primary'], true) ? $accent : 'amber';
 
@@ -48,6 +57,12 @@ return [
 
             $document->head[] = '<link rel="preload" href="'.e($font).'" as="font" type="font/woff2" crossorigin>';
         }),
+
+    (new Extend\ServiceProvider())
+        ->register(LobbyServiceProvider::class),
+
+    (new Extend\Middleware('forum'))
+        ->add(DecideTheme::class),
 
     (new Extend\Frontend('admin'))
         ->js(__DIR__.'/js/dist/admin.js'),
@@ -84,7 +99,9 @@ return [
          * and another extension that includes `firstPost` would serialise the
          * half-loaded model (a null createdAt blanks core's PostStream).
          */
-        ->endpoint('index', fn (Endpoint\Index $endpoint) => $endpoint->eagerLoad('firstPost')),
+        ->endpoint('index', fn (Endpoint\Index $endpoint) => $endpoint->eagerLoad(
+            fn (array $included, Context $context) => resolve(ActiveTheme::class)->isLobby($context->request) ? ['firstPost'] : []
+        )),
 
     /*
      * Channels are tags. flarum/tags only preloads the top-level ones, so
@@ -101,6 +118,7 @@ return [
                     Schema\Relationship\ToMany::make('lobbyChildTags')
                         ->type('tags')
                         ->includable()
+                        ->visible(fn ($forum, Context $context) => resolve(ActiveTheme::class)->isLobby($context->request))
                         ->get(fn ($forum, Context $context) => Tag::whereVisibleTo($context->getActor())
                             ->whereNotNull('parent_id')
                             ->whereNotNull('position')

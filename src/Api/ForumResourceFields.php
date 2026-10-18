@@ -9,6 +9,7 @@
 
 namespace ErnestDefoe\Lobby\Api;
 
+use ErnestDefoe\Lobby\ActiveTheme;
 use Flarum\Api\Context;
 use Flarum\Api\Schema;
 use Flarum\Extension\ExtensionManager;
@@ -32,6 +33,7 @@ class ForumResourceFields
         protected ExtensionManager $extensions,
         protected ConnectionInterface $db,
         protected Cache $cache,
+        protected ActiveTheme $theme,
     ) {
     }
 
@@ -39,6 +41,7 @@ class ForumResourceFields
     {
         return [
             Schema\Integer::make('lobbyMemberCount')
+                ->visible($this->onLobby(...))
                 ->get(fn (): int => (int) $this->cache->remember(
                     'ernestdefoe-lobby.member_count',
                     self::MEMBER_TTL,
@@ -46,6 +49,7 @@ class ForumResourceFields
                 )),
 
             Schema\Boolean::make('lobbyCanViewOnline')
+                ->visible($this->onLobby(...))
                 ->get(fn ($forum, Context $context): bool => $context->getActor()->can('ernestdefoe-lobby.viewOnline')),
 
             /*
@@ -65,7 +69,8 @@ class ForumResourceFields
              * sidebar only shows tags the forum payload already gave them.
              */
             Schema\Arr::make('lobbyMentions')
-                ->visible(fn ($forum, Context $context): bool => ! $context->getActor()->isGuest()
+                ->visible(fn ($forum, Context $context): bool => $this->onLobby($forum, $context)
+                    && ! $context->getActor()->isGuest()
                     && $this->extensions->isEnabled('flarum-mentions')
                     && $this->extensions->isEnabled('flarum-tags'))
                 ->get(fn ($forum, Context $context): array => $this->db->table('notifications')
@@ -82,5 +87,11 @@ class ForumResourceFields
                     ->map(fn ($count) => (int) $count)
                     ->all()),
         ];
+    }
+
+    /** Visitors on another Wardrobe theme pay for none of these. */
+    public function onLobby(mixed $forum, Context $context): bool
+    {
+        return $this->theme->isLobby($context->request);
     }
 }
