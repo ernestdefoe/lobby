@@ -351,6 +351,7 @@
   flex: 0 0 auto;
   min-height: 60px;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 6px;
   padding: 8px 8px 8px 12px;
@@ -363,7 +364,10 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  flex: 1 1 auto;
+  // A row of its own: a forum's header controls (notifications, messages,
+  // theme switchers, the session menu...) can be six icons or more, and the
+  // reader's name must not be squeezed to an ellipsis by them.
+  flex: 1 1 100%;
   min-width: 0;
   color: var(--lobby-text);
   text-decoration: none !important;
@@ -417,7 +421,7 @@
 }
 
 .LobbySidebar-controls {
-  flex: 0 1 auto;
+  flex: 1 1 100%;
   min-width: 0;
 
   // Guests get Sign up / Log in, which want the whole row.
@@ -428,7 +432,8 @@
   .Header-controls {
     display: flex;
     align-items: center;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
+    justify-content: space-between;
     gap: 2px;
     list-style: none;
     margin: 0;
