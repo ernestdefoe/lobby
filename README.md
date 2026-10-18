@@ -2,7 +2,7 @@
 
 A dark-first community theme for **Flarum 2**, shaped like Discord and Circle. Tags become `#channels` in a left sidebar, discussions read as chat-style rows, and the people who are here right now are listed on the right.
 
-![Lobby, dark](screenshots/activity-dark.png)
+![Lobby, dark](screenshots/01-index-dark.png)
 
 ## What it does
 
@@ -19,7 +19,7 @@ A dark-first community theme for **Flarum 2**, shaped like Discord and Circle. T
 
 ### Discussions read as a conversation
 
-![A discussion in Lobby](screenshots/topic-dark.png)
+![A discussion in Lobby](screenshots/02-topic-dark.png)
 
 - **A header bar** with `#channel › title`, the reply count and a stack of participants, plus **Solved** (fof/best-answer), **Jump to unread**, Follow and the controls.
 - **Messages, not cards.** Consecutive messages from one person within seven minutes share a single header, with the time in the gutter on hover. **Day dividers** and a red **"New messages"** line mark where you left off.
@@ -30,23 +30,31 @@ A dark-first community theme for **Flarum 2**, shaped like Discord and Circle. T
 - **Thread info** replaces the scrubber: who started the thread and when, replies, tags, jump to First / Unread / Latest, and the participants with presence dots.
 - Live replies (flarum/realtime, your own replies, "load more") are decorated exactly like the rest.
 
-| Channel | Light |
+| A channel | Light |
 |---|---|
-| ![A channel](screenshots/channel-dark.png) | ![Light](screenshots/activity-light.png) |
+| ![A channel](screenshots/channel-dark.png) | ![Light](screenshots/04-index-light.png) |
 
-| Phone | Channel drawer | A discussion on a phone |
+| A discussion, light | The sidebar: unread dots and a mention badge | The Online list |
 |---|---|---|
-| ![Phone](screenshots/phone.png) | ![Drawer](screenshots/phone-drawer.png) | ![Topic on a phone](screenshots/topic-phone.png) |
+| ![A discussion in light mode](screenshots/topic-light.png) | ![The sidebar](screenshots/sidebar.png) | ![The Online list](screenshots/online-list.png) |
 
-Checked in Mobile Safari on an iPhone 17 Pro simulator:
+### On phones
 
-| Index | Scrolled (Safari's bars collapsed) | Discussion | Thread info |
+Real devices: Mobile Safari on an iPhone 17 Pro simulator, and Chrome on a Pixel 9 emulator.
+
+| Android: channels | Android: a discussion | Android: replying, keyboard up | The channel drawer |
 |---|---|---|---|
-| ![](screenshots/devices/ios-index.png) | ![](screenshots/devices/ios-index-scrolled.png) | ![](screenshots/devices/ios-topic.png) | ![](screenshots/devices/ios-thread-info.png) |
+| ![](screenshots/03-phone-index.png) | ![](screenshots/devices/android-topic-dark.png) | ![](screenshots/devices/android-composer-keyboard.png) | ![](screenshots/phone-drawer.png) |
+
+| iPhone: channels | iPhone: a discussion | iPhone: light, as a guest | Safari's bars collapsed | Thread info |
+|---|---|---|---|---|
+| ![](screenshots/devices/ios-index-dark.png) | ![](screenshots/devices/ios-topic-dark.png) | ![](screenshots/devices/ios-index.png) | ![](screenshots/devices/ios-index-scrolled.png) | ![](screenshots/devices/ios-thread-info.png) |
 
 ## Settings
 
 *Admin → Lobby*
+
+![Lobby's settings](screenshots/admin-settings.png)
 
 - **Accent colour**: Amber, Blue, Green, Pink, or the forum's own primary colour. The presets are tuned to read on both of Lobby's backgrounds.
 - **Show the Online list**, and **how many people** it lists (5–100).
