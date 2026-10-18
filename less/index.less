@@ -52,6 +52,10 @@
 }
 
 .LobbyChannelHeader-title {
+  // The channel's name never gives way to its description: it keeps its
+  // width, and the description takes the ellipsis.
+  flex: 0 0 auto;
+  max-width: 100%;
   margin: 0;
   font-size: 17px;
   font-weight: 600;
@@ -69,6 +73,7 @@
 }
 
 .LobbyChannelHeader-description {
+  flex: 1 1 0;
   margin: 0;
   color: var(--lobby-faint);
   font-size: 13px;
