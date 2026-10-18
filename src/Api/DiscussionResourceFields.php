@@ -9,9 +9,11 @@
 
 namespace ErnestDefoe\Lobby\Api;
 
+use ErnestDefoe\Lobby\ActiveTheme;
 use Flarum\Api\Context;
 use Flarum\Api\Schema;
 use Flarum\Discussion\Discussion;
+use Flarum\Extension\ExtensionManager;
 use Flarum\Post\CommentPost;
 use s9e\TextFormatter\Utils;
 
@@ -35,9 +37,25 @@ class DiscussionResourceFields
              */
             Schema\Str::make('lobbyExcerpt')
                 ->nullable()
-                ->visible(fn (Discussion $discussion, Context $context): bool => $context->listing())
+                ->visible(fn (Discussion $discussion, Context $context): bool => $context->listing() && self::wanted($context))
                 ->get(fn (Discussion $discussion): ?string => $this->excerpt($discussion)),
         ];
+    }
+
+    /**
+     * Lobby's own excerpt is wanted when the visitor is on Lobby and
+     * fof/synopsis is not enabled.
+     *
+     * 🚨 With fof/synopsis enabled, the forum already has an excerpt: the
+     * owner's choice of first or last post and length, per tag, and each
+     * member's "show excerpts" preference. Lobby draws synopsis's in its own
+     * slot under the title (rows.tsx) and does no excerpt work of its own: no
+     * eager load, no field. Two excerpts per row was the 1.0.0 bug.
+     */
+    public static function wanted(Context $context): bool
+    {
+        return ! resolve(ExtensionManager::class)->isEnabled('fof-synopsis')
+            && resolve(ActiveTheme::class)->isLobby($context->request);
     }
 
     public function excerpt(Discussion $discussion): ?string

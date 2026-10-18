@@ -100,7 +100,7 @@ return [
          * half-loaded model (a null createdAt blanks core's PostStream).
          */
         ->endpoint('index', fn (Endpoint\Index $endpoint) => $endpoint->eagerLoad(
-            fn (array $included, Context $context) => resolve(ActiveTheme::class)->isLobby($context->request) ? ['firstPost'] : []
+            fn (array $included, Context $context) => Api\DiscussionResourceFields::wanted($context) ? ['firstPost'] : []
         )),
 
     /*

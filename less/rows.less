@@ -143,6 +143,29 @@
   font-size: 14px;
 }
 
+// fof/synopsis's excerpt in Lobby's slot: one line, like Lobby's own,
+// whatever markup a rich excerpt brings.
+.LobbyRow-excerpt--synopsis {
+  display: block;
+
+  .Synopsis-excerpt,
+  .Synopsis-excerpt * {
+    display: inline;
+    margin: 0;
+    font-size: inherit;
+  }
+  .Synopsis-excerpt img {
+    display: none;
+  }
+}
+
+@media @phone {
+  // The member chose not to see excerpts on phones (synopsis's own setting).
+  .LobbyRow-excerpt--wide {
+    display: none;
+  }
+}
+
 .LobbyRow-stats {
   display: flex;
   flex-direction: column;

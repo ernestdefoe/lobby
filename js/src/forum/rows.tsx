@@ -35,6 +35,16 @@ export default function installRows() {
     const info = this.infoItems();
     info.remove('terminalPost');
 
+    // fof/synopsis puts its excerpt in the info line, which Lobby draws ABOVE
+    // the title. When it is there, it is the excerpt: it moves to Lobby's slot
+    // under the title (the server then sends no excerpt of Lobby's own), so a
+    // row never shows the text twice. Its phone variant says whether the
+    // member wants excerpts on phones at all.
+    const synopsis = info.has('excerpt') ? info.get('excerpt') : null;
+    const synopsisOnPhone = info.has('excerptM');
+    info.remove('excerpt');
+    info.remove('excerptM');
+
     items.remove('main');
     items.add(
       'main',
@@ -46,7 +56,11 @@ export default function installRows() {
           <ul className="DiscussionListItem-info LobbyRow-info">{listItems(info.toArray())}</ul>
         </span>
         <h2 className="DiscussionListItem-title LobbyRow-title">{highlight(discussion.title(), this.highlightRegExp)}</h2>
-        {excerpt ? <span className="LobbyRow-excerpt">{excerpt}</span> : null}
+        {excerpt ? (
+          <span className="LobbyRow-excerpt">{excerpt}</span>
+        ) : synopsis ? (
+          <span className={'LobbyRow-excerpt LobbyRow-excerpt--synopsis' + (synopsisOnPhone ? '' : ' LobbyRow-excerpt--wide')}>{synopsis}</span>
+        ) : null}
       </Link>,
       80
     );

@@ -58,6 +58,19 @@ class ForumPayloadTest extends LobbyTestCase
     }
 
     #[Test]
+    public function with_fof_synopsis_lobby_sends_no_excerpt_of_its_own()
+    {
+        $this->extension('flarum-tags', 'flarum-mentions', 'fof-synopsis', 'ernestdefoe-lobby');
+
+        [$status, $body] = $this->get('/api/discussions');
+
+        // Synopsis provides the excerpt (rows.tsx shows it in Lobby's slot);
+        // a second one in every row was the 1.0.0 bug.
+        $this->assertSame(200, $status);
+        $this->assertArrayNotHasKey('lobbyExcerpt', $body['data'][0]['attributes']);
+    }
+
+    #[Test]
     public function a_hidden_first_post_gives_no_excerpt()
     {
         $this->database()->table('posts')->where('id', 1)->update(['hidden_at' => \Carbon\Carbon::now()]);
