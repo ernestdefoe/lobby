@@ -51,7 +51,7 @@ export default function installIndexPage() {
     if (tag) markChannelSeen(tag.id());
 
     items.remove('toolbar');
-    items.add('lobbyHeader', <ChannelHeader page={this} tag={tag} />, 100);
+    items.add('lobbyHeader', <ChannelHeader page={this} channel={tag} />, 100);
 
     if (!tag && !app.search.state.params().q) {
       items.add(
@@ -63,7 +63,7 @@ export default function installIndexPage() {
       );
     }
 
-    items.add('lobbyCompose', <ComposeBar tag={tag} />, -100);
+    items.add('lobbyCompose', <ComposeBar channel={tag} />, -100);
   });
 
   extend(PageStructure.prototype, 'containerItems', function (items) {
@@ -96,14 +96,16 @@ export default function installIndexPage() {
   });
 }
 
+// 🚨 `channel`, never `tag`: Flarum's Component refuses an attribute named
+// `tag` (Mithril 2 reserves it) and throws on init.
 interface HeaderAttrs {
   page: any;
-  tag: any;
+  channel: any;
 }
 
 class ChannelHeader extends Component<HeaderAttrs> {
   view() {
-    const { page, tag } = this.attrs;
+    const { page, channel: tag } = this.attrs;
     const following = m.route.get().startsWith('/following');
     const description = tag ? tag.description() : following ? null : app.forum.attribute<string>('description');
 
@@ -185,11 +187,11 @@ class ChannelChips extends Component<{ active: any }> {
  * "Start a discussion in #channel", sitting at the foot of the list like a
  * chat box. It opens the real composer; nothing is typed here.
  */
-class ComposeBar extends Component<{ tag: any }> {
+class ComposeBar extends Component<{ channel: any }> {
   view() {
     if (!canStart()) return null;
 
-    const tag = this.attrs.tag;
+    const tag = this.attrs.channel;
     const label = tag ? t('compose.in_channel', { channel: tag.name() }) : t('compose.anywhere');
 
     return [

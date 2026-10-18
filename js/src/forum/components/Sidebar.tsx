@@ -25,11 +25,17 @@ const t = (key: string, params: Record<string, any> = {}) => app.translator.tran
  *
  * 🚨 Built from `IndexSidebar.navItems()` rather than drawn from scratch, so
  * everything other extensions add there — Following, private discussions,
- * a page link — still appears. Only "All discussions" (our Activity) and
- * flarum/tags' own tag links are dropped: those are the channels below.
+ * a page link — still appears. Dropped: "All discussions" (our Activity),
+ * flarum/tags' own tag links (the channels below), flarum/messages' link
+ * (drawn above with its unread badge) and Following (a filter in the
+ * channel header).
  */
-const TAG_ITEM = /^(allDiscussions|tags|separator|moreTags|tag\d+)$/;
+const TAG_ITEM = /^(allDiscussions|tags|separator|moreTags|tag\d+|messages|following)$/;
 
+/**
+ * Every other extension link goes in an Explore group under the channels, so
+ * a forum with twenty extensions does not push its channels off the screen.
+ */
 function extraNavItems(): Mithril.Children[] {
   let items;
 
@@ -63,6 +69,7 @@ export default class Sidebar extends Component {
     const user = app.session.user;
     const messages = user && 'flarum-messages' in (flarum as any).extensions;
     const unreadDialogs = (user && user.attribute<number>('unreadDialogCount')) || 0;
+    const nav = extraNavItems();
 
     return (
       <nav className="LobbySidebar" aria-label={t('sidebar.label')}>
@@ -111,12 +118,7 @@ export default class Sidebar extends Component {
                 </Link>
               </li>
             ) : null}
-            {listItems(extraNavItems())}
           </ul>
-
-          <div className="LobbySidebar-primary" onclick={closeDrawer}>
-            <HeaderPrimary />
-          </div>
 
           {channelGroups().map((group) => (
             <section className="LobbyGroup" key={group.key} aria-label={group.label || undefined}>
@@ -133,6 +135,19 @@ export default class Sidebar extends Component {
               </ul>
             </section>
           ))}
+
+          {nav.length ? (
+            <section className="LobbyGroup LobbyGroup--explore" aria-label={t('sidebar.explore') as any}>
+              <h3 className="LobbyGroup-label">{t('sidebar.explore')}</h3>
+              <ul className="LobbySidebar-nav" onclick={closeDrawer}>
+                {listItems(nav)}
+              </ul>
+            </section>
+          ) : null}
+
+          <div className="LobbySidebar-primary" onclick={closeDrawer}>
+            <HeaderPrimary />
+          </div>
         </div>
 
         <div className="LobbySidebar-user">

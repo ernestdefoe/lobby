@@ -119,6 +119,12 @@
     right: 8px !important;
   }
 
+  // ernestdefoe/mobile-tab draws its own bottom bar. Lobby's tab bar takes
+  // its place rather than stacking a second one on top of it.
+  .MobileTab-bar {
+    display: none !important;
+  }
+
   // The tab bar.
   .LobbyShell-tabbar {
     display: block;
@@ -183,6 +189,9 @@
     min-height: 0;
     gap: 0;
     flex-direction: column;
+    // 🚨 No wrap: a wrapping column sizes its line to the widest child, and
+    // the chip row's full width (every channel) would widen the whole page.
+    flex-wrap: nowrap;
     align-items: stretch;
     border-bottom-color: var(--lobby-border);
   }
@@ -207,6 +216,8 @@
   .LobbyChips {
     order: 1;
     display: flex;
+    min-width: 0;
+    max-width: 100%;
     gap: 8px;
     padding: 10px 12px;
     overflow-x: auto;
@@ -244,6 +255,12 @@
 
   .IndexPage .DiscussionList {
     padding: 6px 8px;
+  }
+  // A carousel or wide embed from another extension must not give the whole
+  // phone page a sideways scroll. `clip`, not `hidden`: it creates no scroll
+  // container, so the sticky channel header keeps sticking.
+  .IndexPage .Page-content {
+    overflow-x: clip;
   }
   .DiscussionListItem-content {
     gap: 12px;

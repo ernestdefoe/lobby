@@ -473,9 +473,12 @@
     }
   }
   .guest-user & .item-signUp .Button {
-    background: var(--lobby-accent);
-    color: var(--lobby-on-accent);
+    background: var(--lobby-accent) !important;
+    color: var(--lobby-on-accent) !important;
     font-weight: 600;
+  }
+  .guest-user & .item-logIn .Button {
+    color: var(--lobby-text) !important;
   }
   // The session menu is a cog here: avatar and name are drawn beside it.
   .SessionDropdown .Avatar {

@@ -26,6 +26,7 @@ ernestdefoe-lobby:
       messages: Messages
       unread_messages: "{count, plural, one {# unread conversation} other {# unread conversations}}"
       more_tags: All tags
+      explore: Explore
       mentions: "{count, plural, one {# unread mention} other {# unread mentions}}"
       unread: New activity
     presence:

@@ -84,7 +84,9 @@
   gap: 8px;
   margin-left: auto;
 
-  ul {
+  // Direct lists only: a dropdown's own menu is a <ul> too, and must keep
+  // core's show/hide.
+  > ul {
     display: flex;
     align-items: center;
     gap: 8px;

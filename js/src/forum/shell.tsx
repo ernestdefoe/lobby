@@ -114,9 +114,10 @@ const TabBar = {
     const alerts = (user && user.newNotificationCount()) || 0;
     const home = app.current.matches(IndexPage);
 
-    const tab = (key: string, icon: string, label: any, attrs: Record<string, any>, active: boolean, badge = 0) => (
+    // Unkeyed on purpose: the set of tabs changes (no Messages for a guest),
+    // and Mithril refuses a mix of keyed tabs and empty slots.
+    const tab = (_name: string, icon: string, label: any, attrs: Record<string, any>, active: boolean, badge = 0) => (
       <Link
-        key={key}
         {...attrs}
         className={classList('LobbyTab', { active })}
         aria-current={active ? 'page' : undefined}
