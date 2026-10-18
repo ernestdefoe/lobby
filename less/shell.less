@@ -468,6 +468,11 @@
       display: none;
     }
   }
+  // A guest's row is Sign up and Log in beside the switchers, on one line.
+  .guest-user & .Header-controls {
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+  }
   .guest-user & .item-signUp .Button,
   .guest-user & .item-logIn .Button {
     width: auto;
