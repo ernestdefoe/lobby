@@ -98,7 +98,12 @@ function replyContext(post: any): ReplyContext | null {
         excerpt = text.replace(/\s+/g, ' ').trim().slice(0, 90);
       }
 
-      value = { id, name: (anchor.textContent || '').replace(/^@/, '').trim(), excerpt, href: anchor.getAttribute('href') };
+      // Only a site-relative or http(s) link is used as a link; anything else
+      // (it would take hand-written HTML to get one here) falls back to '#'.
+      const raw = anchor.getAttribute('href') || '';
+      const href = /^(\/(?!\/)|https?:\/\/)/i.test(raw.trim()) ? raw.trim() : null;
+
+      value = { id, name: (anchor.textContent || '').replace(/^@/, '').trim(), excerpt, href };
     }
   }
 

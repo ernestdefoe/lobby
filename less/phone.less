@@ -125,6 +125,17 @@
     display: none !important;
   }
 
+  // Other floating buttons pinned to the bottom corner (ernestdefoe/parley's
+  // "N online" peek) would sit on the tab bar and the compose button; they
+  // stack above both instead.
+  .pl-peek {
+    bottom: calc(~'152px + env(safe-area-inset-bottom, 0px)') !important;
+  }
+  .App--discussion ~ * .pl-peek,
+  .App--discussion .pl-peek {
+    bottom: calc(~'84px + env(safe-area-inset-bottom, 0px)') !important;
+  }
+
   // The tab bar.
   .LobbyShell-tabbar {
     display: block;

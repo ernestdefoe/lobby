@@ -17,13 +17,32 @@ A dark-first community theme for **Flarum 2**, shaped like Discord and Circle. T
 - **Phones get their own layout:** a top bar, a row of channel chips, a floating compose button and a tab bar (Home, Messages, Alerts, You). The sidebar becomes a drawer.
 - **A real light theme** for forums set to light or auto, not the dark one with the lights left on.
 
+### Discussions read as a conversation
+
+![A discussion in Lobby](screenshots/topic-dark.png)
+
+- **A header bar** with `#channel › title`, the reply count and a stack of participants, plus **Solved** (fof/best-answer), **Jump to unread**, Follow and the controls.
+- **Messages, not cards.** Consecutive messages from one person within seven minutes share a single header, with the time in the gutter on hover. **Day dividers** and a red **"New messages"** line mark where you left off.
+- **"↳ replying to @name: …"** above a message that opens with a mention of another post. It's built from the mention data already on the page.
+- **A toolbar on hover or focus** carries core's own actions (react, reply, quote, ⋯), so likes, reactions and every other extension's actions still work. On touch screens, a tap brings it up.
+- **Events** (renamed, tagged, pinned) are one grey line. A Page Builder article or a blog post keeps its first post as the article.
+- **"Message #channel › title"** is docked at the foot and opens Flarum's own composer. When you can't reply, it says why.
+- **Thread info** replaces the scrubber: who started the thread and when, replies, tags, jump to First / Unread / Latest, and the participants with presence dots.
+- Live replies (flarum/realtime, your own replies, "load more") are decorated exactly like the rest.
+
 | Channel | Light |
 |---|---|
 | ![A channel](screenshots/channel-dark.png) | ![Light](screenshots/activity-light.png) |
 
-| Phone | Channel drawer |
-|---|---|
-| ![Phone](screenshots/phone.png) | ![Drawer](screenshots/phone-drawer.png) |
+| Phone | Channel drawer | A discussion on a phone |
+|---|---|---|
+| ![Phone](screenshots/phone.png) | ![Drawer](screenshots/phone-drawer.png) | ![Topic on a phone](screenshots/topic-phone.png) |
+
+Checked in Mobile Safari on an iPhone 17 Pro simulator:
+
+| Index | Scrolled (Safari's bars collapsed) | Discussion | Thread info |
+|---|---|---|---|
+| ![](screenshots/devices/ios-index.png) | ![](screenshots/devices/ios-index-scrolled.png) | ![](screenshots/devices/ios-topic.png) | ![](screenshots/devices/ios-thread-info.png) |
 
 ## Settings
 
@@ -46,14 +65,15 @@ Measured with 25 tags (15 of them children) and 60 discussions. These numbers ar
 
 | | Queries |
 |---|---|
+| A discussion's posts | none: Lobby adds no query and no request per post |
 | Discussion list, 1 row or 50 | +1 for the whole page (the excerpt's first-post eager load); flat with the row count |
 | Forum payload | +2 for a guest (child tags and their parents), +3 for a member (plus mentions, as one grouped query); flat with the number of channels |
 | Online list | 1 for a guest when warm; who is online is one query cached for a minute and shared by every viewer |
 
 | Every page | Size |
 |---|---|
-| forum.js | 21.0 KB minified, 6.5 KB gzipped |
-| Lobby's CSS | 25.8 KB minified, 5.3 KB gzipped |
+| forum.js | 32.2 KB minified, 9.7 KB gzipped |
+| Lobby's CSS | 38.6 KB minified, 7.2 KB gzipped |
 | Geist (latin) | 29 KB, preloaded; latin-ext and the mono face load only when a page uses them |
 
 ## Running it next to other themes
