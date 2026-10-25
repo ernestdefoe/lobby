@@ -7,7 +7,12 @@
 @import 'phone';
 @import 'ticker';
 
-body {
+// 🚨 Core's page template carries an inline `[data-theme^="dark"] body`
+// background (so the page never flashes white while CSS loads), which outranks
+// a plain `body` rule: dark mode stayed core's navy instead of --lobby-bg.
+// `html[data-theme] body` outranks it in light and dark alike.
+body,
+html[data-theme] body {
   font-family: var(--lobby-font);
   background: var(--lobby-bg);
   -webkit-font-smoothing: antialiased;
