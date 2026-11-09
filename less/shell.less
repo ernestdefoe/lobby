@@ -281,6 +281,45 @@
   padding: 14px 8px 4px;
 }
 
+// fof/forum-widgets-core's start sections, above and below the channels: a
+// group like the others, its widget titles drawn as the group labels are.
+.LobbySidebar .FofWidgets-startTop,
+.LobbySidebar .FofWidgets-startBottom {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 14px 18px 4px;
+  min-width: 0;
+  color: var(--lobby-text);
+  font-size: 13px;
+
+  > * {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .FofWidgets-Widget-title {
+    margin: 0 0 6px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--lobby-faint);
+    font-weight: 600;
+  }
+  .FofWidgets-Widget:not(.FofWidgets-Widget--flat) .FofWidgets-Widget-content {
+    background: var(--lobby-hover);
+    border-radius: 8px;
+    color: var(--lobby-text);
+  }
+  a:not(.Button) {
+    color: var(--lobby-text);
+  }
+}
+.LobbySidebar .FofWidgets-startTop {
+  padding-top: 4px;
+  padding-bottom: 10px;
+}
+
 .LobbyGroup-label {
   margin: 0;
   padding: 0 10px 6px;

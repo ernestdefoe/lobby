@@ -17,6 +17,7 @@ import { channelGroups, currentTag, mentionCount } from '../channels';
 import { channelUnread, markChannelSeen, seenThisSession } from '../visits';
 import { closeDrawer } from '../drawer';
 import formatCount from '../formatCount';
+import { fofStartSection } from '../fofStart';
 
 const t = (key: string, params: Record<string, any> = {}) => app.translator.trans(`ernestdefoe-lobby.forum.${key}`, params);
 
@@ -92,6 +93,8 @@ export default class Sidebar extends Component {
         </div>
 
         <div className="LobbySidebar-scroll">
+          {onIndex ? fofStartSection('top') : null}
+
           <ul className="LobbySidebar-nav">
             <li>
               <Link
@@ -144,6 +147,8 @@ export default class Sidebar extends Component {
               </ul>
             </section>
           ) : null}
+
+          {onIndex ? fofStartSection('bottom') : null}
 
           <div className="LobbySidebar-primary" onclick={closeDrawer}>
             <HeaderPrimary />

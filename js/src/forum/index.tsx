@@ -7,6 +7,7 @@ import installShell from './shell';
 import installIndexPage from './indexPage';
 import installRows from './rows';
 import registerOnlineWidgets from './widgets';
+import installFofStart from './fofStart';
 import { bootVisits } from './visits';
 import installTopicPage from './topic/topicPage';
 import installStreamDecor from './topic/streamDecor';
@@ -31,6 +32,7 @@ app.initializers.add(
     installTopicPage();
     installStreamDecor();
     registerOnlineWidgets();
+    installFofStart();
 
     // In the sidebar's user panel the session menu is a settings cog: the
     // avatar and name are already drawn beside it.
